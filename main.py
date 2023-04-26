@@ -13,7 +13,6 @@ from sqlalchemy import ForeignKey, ForeignKeyConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from flask import session
 from flask import request
-from waitress import serve
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -230,4 +229,4 @@ def load_user(user_id):
 
 
 if __name__ == "__main__":
-    serve(app, host='0000000', port=5000)
+    app.run(debug=True)
