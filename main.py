@@ -14,6 +14,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from flask import session
 from flask import request
 from os import environ
+import psycopg2
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -24,11 +25,12 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("SQL")
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("PostgreSQL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False, base_url=None)
+gravatar = Gravatar(app, size=100, rating='g', default='retro',
+                    force_default=False, force_lower=False, use_ssl=False, base_url=None)
 
 
 # CONFIGURE TABLES
@@ -49,7 +51,7 @@ class BlogPost(db.Model):
     title = db.Column(db.String(250), nullable=False)
     subtitle = db.Column(db.String(250), nullable=False)
     body = db.Column(db.Text, nullable=False)
-    img_url = db.Column(db.String(250), nullable=False)
+    img_url = db.Column(db.String(500), nullable=False)
     date = db.Column(db.String(250), nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     author = relationship("User", back_populates="posts")
@@ -230,4 +232,6 @@ def load_user(user_id):
 
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
