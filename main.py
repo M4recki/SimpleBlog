@@ -13,12 +13,13 @@ from sqlalchemy import ForeignKey, ForeignKeyConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from flask import session
 from flask import request
+from os import environ
 
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = environ.get("SQL")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
