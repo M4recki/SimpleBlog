@@ -192,7 +192,6 @@ def add_new_post():
     return render_template("make-post.html", form=form)
 
 
-#FIXME: edit post does not work properly.
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 @admin_only
 @login_required
